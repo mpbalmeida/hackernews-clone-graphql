@@ -1,5 +1,7 @@
-const { GraphQLServer } = require('graphql-yoga')
-const { Prisma } = require('prisma-binding')
+const { GraphQLServer } = require('graphql-yoga');
+const { Prisma } = require('prisma-binding');
+require('dotenv').config();
+console.log(process.env.PRISMA_ENDPOINT)
 
 const resolvers = {
   Query: {
@@ -12,6 +14,13 @@ const resolvers = {
     post(parent, { id }, ctx, info) {
       return ctx.db.query.post({ where: { id } }, info)
     },
+    linksFeed: (parent, args, ctx, info) => {
+      return ctx.db.query.links(info);
+    },
+    singleLink: (parent, { id }, ctx, info) => {
+      return ctx.db.query.link({where: {id}}, info);
+    }
+
   },
   Mutation: {
     createDraft(parent, { title, text }, ctx, info) {
@@ -35,8 +44,34 @@ const resolvers = {
           data: { isPublished: true },
         },
         info,
-      )
+      );
     },
+    createLink: (parent, {url, description}, ctx, info) => {
+      return ctx.db.mutation.createLink(
+        {
+          data: {
+            url,
+            description
+          }
+        },
+        info
+      );
+    },
+    updateLink: (parent, {id, url, description}, ctx, info) => {
+      return ctx.db.mutation.updateLink(
+        {
+          where: { id },
+          data: { 
+            url,
+            description
+          }
+        },
+        info
+      );
+    },
+    deleteLink: (parent, {id}, ctx, info) => {
+      return ctx.db.mutation.deleteLink({where: {id}}, info);
+    }
   },
 }
 
@@ -47,7 +82,7 @@ const server = new GraphQLServer({
     ...req,
     db: new Prisma({
       typeDefs: 'src/generated/prisma.graphql', // the auto-generated GraphQL schema of the Prisma API
-      // endpoint: 'https://eu1.prisma.sh/public-groveshift-680/hackernews-clone-node/dev', // the endpoint of the Prisma API
+      endpoint: process.env.PRISMA_ENDPOINT, // the endpoint of the Prisma API
       debug: true, // log all GraphQL queries & mutations sent to the Prisma API
       // secret: 'mysecret123', // only needed if specified in `database/prisma.yml`
     }),

@@ -1,5 +1,9 @@
-# source: https://eu1.prisma.sh/public-groveshift-680/hackernews-clone-node/dev
-# timestamp: Fri Jul 20 2018 08:45:15 GMT+0500 (PKT)
+# source: https://us1.prisma.sh/marcos-paulo-belasco-de-almeida-2c29c7/hackernews-graphql/dev
+# timestamp: Thu Nov 22 2018 18:49:34 GMT-0200 (-02)
+
+type AggregateLink {
+  count: Int!
+}
 
 type AggregatePost {
   count: Int!
@@ -10,6 +14,239 @@ type BatchPayload {
   count: Long!
 }
 
+type Link implements Node {
+  id: ID!
+  url: String!
+  description: String!
+}
+
+"""A connection to a list of items."""
+type LinkConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [LinkEdge]!
+  aggregate: AggregateLink!
+}
+
+input LinkCreateInput {
+  url: String!
+  description: String!
+}
+
+"""An edge in a connection."""
+type LinkEdge {
+  """The item at the end of the edge."""
+  node: Link!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum LinkOrderByInput {
+  id_ASC
+  id_DESC
+  url_ASC
+  url_DESC
+  description_ASC
+  description_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type LinkPreviousValues {
+  id: ID!
+  url: String!
+  description: String!
+}
+
+type LinkSubscriptionPayload {
+  mutation: MutationType!
+  node: Link
+  updatedFields: [String!]
+  previousValues: LinkPreviousValues
+}
+
+input LinkSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [LinkSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [LinkSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [LinkSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: LinkWhereInput
+}
+
+input LinkUpdateInput {
+  url: String
+  description: String
+}
+
+input LinkUpdateManyMutationInput {
+  url: String
+  description: String
+}
+
+input LinkWhereInput {
+  """Logical AND on all given filters."""
+  AND: [LinkWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [LinkWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [LinkWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  url: String
+
+  """All values that are not equal to given value."""
+  url_not: String
+
+  """All values that are contained in given list."""
+  url_in: [String!]
+
+  """All values that are not contained in given list."""
+  url_not_in: [String!]
+
+  """All values less than the given value."""
+  url_lt: String
+
+  """All values less than or equal the given value."""
+  url_lte: String
+
+  """All values greater than the given value."""
+  url_gt: String
+
+  """All values greater than or equal the given value."""
+  url_gte: String
+
+  """All values containing the given string."""
+  url_contains: String
+
+  """All values not containing the given string."""
+  url_not_contains: String
+
+  """All values starting with the given string."""
+  url_starts_with: String
+
+  """All values not starting with the given string."""
+  url_not_starts_with: String
+
+  """All values ending with the given string."""
+  url_ends_with: String
+
+  """All values not ending with the given string."""
+  url_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+}
+
+input LinkWhereUniqueInput {
+  id: ID
+}
+
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -18,11 +255,17 @@ scalar Long
 
 type Mutation {
   createPost(data: PostCreateInput!): Post!
+  createLink(data: LinkCreateInput!): Link!
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
+  updateLink(data: LinkUpdateInput!, where: LinkWhereUniqueInput!): Link
   deletePost(where: PostWhereUniqueInput!): Post
+  deleteLink(where: LinkWhereUniqueInput!): Link
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
-  updateManyPosts(data: PostUpdateInput!, where: PostWhereInput): BatchPayload!
+  upsertLink(where: LinkWhereUniqueInput!, create: LinkCreateInput!, update: LinkUpdateInput!): Link!
+  updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
+  updateManyLinks(data: LinkUpdateManyMutationInput!, where: LinkWhereInput): BatchPayload!
   deleteManyPosts(where: PostWhereInput): BatchPayload!
+  deleteManyLinks(where: LinkWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -146,6 +389,12 @@ input PostSubscriptionWhereInput {
 }
 
 input PostUpdateInput {
+  isPublished: Boolean
+  title: String
+  text: String
+}
+
+input PostUpdateManyMutationInput {
   isPublished: Boolean
   title: String
   text: String
@@ -292,8 +541,11 @@ input PostWhereUniqueInput {
 
 type Query {
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
+  links(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Link]!
   post(where: PostWhereUniqueInput!): Post
+  link(where: LinkWhereUniqueInput!): Link
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  linksConnection(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LinkConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -304,4 +556,5 @@ type Query {
 
 type Subscription {
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+  link(where: LinkSubscriptionWhereInput): LinkSubscriptionPayload
 }
