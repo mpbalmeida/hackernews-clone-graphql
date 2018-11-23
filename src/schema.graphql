@@ -15,4 +15,17 @@ type Mutation {
   createLink(url: String!, description: String): Link
   updateLink(id: ID!, url: String, description: String): Link
   deleteLink(id: ID!): Link
+  signup(email: String!, password: String!, name: String!): AuthPayload
+}
+
+type AuthPayload {
+  token: String!
+  user: User
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  links: [Link!]!
 }
