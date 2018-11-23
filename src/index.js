@@ -58,13 +58,17 @@ const resolvers = {
       );
     },
     updateLink: (parent, {id, url, description}, ctx, info) => {
+      let link = {}
+      if (url) {
+        link.url = url
+      }
+      if (description) {
+        link.description = description
+      }
       return ctx.db.mutation.updateLink(
         {
           where: { id },
-          data: { 
-            url,
-            description
-          }
+          data: link
         },
         info
       );
