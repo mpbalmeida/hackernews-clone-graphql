@@ -9,13 +9,13 @@ const signup = async (parent, {name, email, password}, ctx, info) => {
             email,
             password: hash
         }
-    }, `{id}`)
+    }, `{id}`);
     const token = jwt.sign({userId: user.id}, process.env.APP_SECRET);
     return {
         token,
         user
     }
-}
+};
 
 const login = async (parent, {email, password}, ctx, info) => {
     const user = await ctx.db.query.user(
@@ -35,9 +35,9 @@ const login = async (parent, {email, password}, ctx, info) => {
         token,
         user
     }
-}
+};
 
 module.exports = {
     signup,
     login
-}
+};
